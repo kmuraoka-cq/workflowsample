@@ -35,7 +35,10 @@ version-resolver:
 template: |
   ## Changes
   $CHANGES
-  
+
+exclude-labels:
+  - 'exclude-from-release'
+
 autolabeler:
   - label: enhancement
     branch:
