@@ -12,6 +12,7 @@ jobs:
   label_release_pr:
     if: startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Add label to release PRs
         uses: actions-ecosystem/action-add-labels@v1
