@@ -18,7 +18,7 @@ categories:
 
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 
-change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+change-title-escapes: '\<*_&'
 
 version-resolver:
   major:
@@ -35,10 +35,7 @@ version-resolver:
 template: |
   ## Changes
   $CHANGES
-
-exclude-labels:
-  - 'exclude-from-release'
-
+  
 autolabeler:
   - label: enhancement
     branch:
@@ -58,3 +55,6 @@ autolabeler:
   - label: documentation
     branch:
       - '/^doc[/-].+/'
+  
+exclude-labels:
+  - release
