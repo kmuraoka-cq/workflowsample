@@ -9,6 +9,8 @@ on:
       - main
 
 jobs:
+  permissions:
+    pull-requests: write
   label_release_pr:
     if: startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
