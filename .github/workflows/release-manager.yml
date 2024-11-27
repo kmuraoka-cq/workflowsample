@@ -25,17 +25,16 @@ jobs:
           labels: release
 
   create_release_note:
-    if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
+    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Release Drafter
+      - name: Create Release Tag And Note
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.pull_request.title }}
         uses: release-drafter/release-drafter@v6
         with:
-          config-name: release-drafter.yml
-          tag: ${{ github.event.pull_request.title }}
-          name: v${{ github.event.pull_request.title }}
-          version: ${{ github.event.pull_request.title }}
+          tag: ${{ env.RELEASE_TAG }}
+          name: v${{ env.RELEASE_TAG }}
+          version: ${{ env.RELEASE_TAG }}
           publish: true
