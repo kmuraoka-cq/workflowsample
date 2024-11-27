@@ -1,0 +1,40 @@
+name: Release Management
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  label_release_pr:
+    if: ${{ github.event.action != 'closed' && startsWith(github.head_ref, 'release/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add label to release PRs
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: release
+
+  create_release_note:
+    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release Tag And Note
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.pull_request.title }}
+        uses: release-drafter/release-drafter@v6
+        with:
+          tag: ${{ env.RELEASE_TAG }}
+          name: v${{ env.RELEASE_TAG }}
+          version: ${{ env.RELEASE_TAG }}
+          publish: true
