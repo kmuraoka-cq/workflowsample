@@ -28,13 +28,14 @@ jobs:
     if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Create Release Tag And Note
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.event.pull_request.title }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Release Drafter
         uses: release-drafter/release-drafter@v6
         with:
-          tag: ${{ env.RELEASE_TAG }}
-          name: v${{ env.RELEASE_TAG }}
-          version: ${{ env.RELEASE_TAG }}
+          config-name: release-drafter.yml
+          tag: ${{ github.event.pull_request.title }}
+          name: v${{ github.event.pull_request.title }}
+          version: ${{ github.event.pull_request.title }}
           publish: true
